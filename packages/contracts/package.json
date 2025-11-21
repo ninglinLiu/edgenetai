@@ -1,0 +1,16 @@
+{
+  "name": "@edgenetai/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "deploy:anvil": "forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --broadcast",
+    "deploy:sepolia": "forge script script/Deploy.s.sol:DeployScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify",
+    "clean": "forge clean"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0"
+  }
+}
+
