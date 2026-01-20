@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npx pnpm@latest install --filter @edgenetai/dashboard --filter @edgenetai/proto --filter edgenetai && npx pnpm@latest --filter @edgenetai/dashboard build",
+  "buildCommand": "npx pnpm@latest install --filter='!@edgenetai/router-api' --filter='!@edgenetai/verifier' --filter='!@edgenetai/node-agent' && npx pnpm@latest --filter @edgenetai/dashboard build",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "npx pnpm@latest install --filter @edgenetai/dashboard --filter @edgenetai/proto --filter edgenetai",
+  "installCommand": "npx pnpm@latest install --filter='!@edgenetai/router-api' --filter='!@edgenetai/verifier' --filter='!@edgenetai/node-agent'",
   "framework": "nextjs"
 }
