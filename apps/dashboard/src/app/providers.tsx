@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { anvil, sepolia } from 'wagmi/chains';
 import { useState } from 'react';
+import { EdgeApiProvider } from '@/lib/edge-api/EdgeApiProvider';
 
 const chains = [anvil, sepolia] as const;
 
@@ -20,7 +21,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <EdgeApiProvider>{children}</EdgeApiProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }
