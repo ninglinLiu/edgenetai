@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npx pnpm@latest install --filter='!@edgenetai/router-api' --filter='!@edgenetai/verifier' --filter='!@edgenetai/node-agent' && npx pnpm@latest --filter @edgenetai/dashboard build",
+  "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "npx pnpm@latest install --filter='!@edgenetai/router-api' --filter='!@edgenetai/verifier' --filter='!@edgenetai/node-agent'",
+  "installCommand": "bash -c \"echo 'packages:\n  - \\\"apps/dashboard\\\"\n  - \\\"packages/*\\\"' > pnpm-workspace.yaml\" && npx pnpm@latest install",
   "framework": "nextjs"
 }
