@@ -95,7 +95,7 @@ export default function LandingPage() {
     >
       {/* Section 1: Fast, familiar, frictionless */}
       <section
-        ref={(el) => (sectionRefs.current[0] = el)}
+        ref={(el) => { sectionRefs.current[0] = el; }}
         className="h-screen snap-start snap-always flex items-center relative bg-slate-950"
       >
         <DotGridBackground />
@@ -137,7 +137,7 @@ export default function LandingPage() {
 
       {/* Section 2: Decentralized by design */}
       <section
-        ref={(el) => (sectionRefs.current[1] = el)}
+        ref={(el) => { sectionRefs.current[1] = el; }}
         className="h-screen snap-start snap-always flex items-center relative bg-slate-950"
       >
         <DotGridBackground />
@@ -171,7 +171,7 @@ export default function LandingPage() {
 
       {/* Section 3: Trust, settled on-chain */}
       <section
-        ref={(el) => (sectionRefs.current[2] = el)}
+        ref={(el) => { sectionRefs.current[2] = el; }}
         className="h-screen snap-start snap-always flex items-center relative bg-slate-950"
       >
         <DotGridBackground />
@@ -205,7 +205,7 @@ export default function LandingPage() {
 
       {/* Section 4: Plug & play integration */}
       <section
-        ref={(el) => (sectionRefs.current[3] = el)}
+        ref={(el) => { sectionRefs.current[3] = el; }}
         className="h-screen snap-start snap-always flex items-center relative bg-slate-950"
       >
         <DotGridBackground />
