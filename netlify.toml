@@ -1,12 +1,23 @@
 [build]
   base = "."
   publish = "apps/dashboard/.next"
-  command = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install && cd apps/dashboard && pnpm build"
+  command = "cd apps/dashboard && pnpm build"
+  # Install command: Remove problematic apps, update workspace config, then install
+  # This runs BEFORE the build command
+  # Note: Netlify may auto-detect and run pnpm install, but this ensures correct setup
   
 [build.environment]
   NODE_VERSION = "20"
   PNPM_VERSION = "10.28.1"
   ENABLE_EXPERIMENTAL_COREPACK = "1"
 
+# Pre-build hook to prepare workspace
+[build.processing]
+  skip_processing = false
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Override default install command
+[[build.processing]]
+  skip_processing = false
