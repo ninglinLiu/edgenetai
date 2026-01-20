@@ -1,0 +1,12 @@
+[build]
+  base = "."
+  publish = "apps/dashboard/.next"
+  command = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install && cd apps/dashboard && pnpm build"
+  
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "10.28.1"
+  ENABLE_EXPERIMENTAL_COREPACK = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
