@@ -1,6 +1,8 @@
 [build]
   base = "."
   publish = "apps/dashboard/.next"
+  # Install command: Prepare workspace (remove problematic apps, update config), then install
+  # This runs BEFORE the build command
   command = "bash netlify-build.sh && cd apps/dashboard && pnpm build"
   
 [build.environment]
