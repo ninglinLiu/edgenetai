@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install -g pnpm@8.15.0 && pnpm install && pnpm --filter @edgenetai/dashboard build",
+  "buildCommand": "npm uninstall -g pnpm && npm install -g pnpm@8.15.0 && pnpm install && pnpm --filter @edgenetai/dashboard build",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "npm install -g pnpm@8.15.0 && pnpm install",
+  "installCommand": "npm uninstall -g pnpm && npm install -g pnpm@8.15.0 && pnpm install",
   "framework": "nextjs"
 }
