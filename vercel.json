@@ -1,6 +1,6 @@
 {
-  "buildCommand": "bash vercel-build.sh",
+  "buildCommand": "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && npx pnpm@latest install && npx pnpm@latest --filter @edgenetai/dashboard build",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "bash -c \"echo 'packages:\n  - \\\"apps/dashboard\\\"\n  - \\\"packages/*\\\"' > pnpm-workspace.yaml\" && npx pnpm@latest install",
+  "installCommand": "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && npx pnpm@latest install",
   "framework": "nextjs"
 }
