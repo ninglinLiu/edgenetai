@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npx pnpm@8.15.0 install && npx pnpm@8.15.0 --filter @edgenetai/dashboard build",
+  "buildCommand": "npx pnpm@latest install && npx pnpm@latest --filter @edgenetai/dashboard build",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "npx pnpm@8.15.0 install",
+  "installCommand": "npx pnpm@latest install",
   "framework": "nextjs"
 }
