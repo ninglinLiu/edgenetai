@@ -12,7 +12,7 @@ import { ArrowRight, Mail, Github } from 'lucide-react';
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState(0);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   // IntersectionObserver to track current section
   useEffect(() => {
