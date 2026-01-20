@@ -1,6 +1,6 @@
 {
-  "buildCommand": "corepack enable && corepack prepare pnpm@8.15.0 --activate && pnpm install && pnpm --filter @edgenetai/dashboard build",
+  "buildCommand": "npm install -g pnpm@8.15.0 && pnpm install && pnpm --filter @edgenetai/dashboard build",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "corepack enable && corepack prepare pnpm@8.15.0 --activate && pnpm install",
+  "installCommand": "npm install -g pnpm@8.15.0 && pnpm install",
   "framework": "nextjs"
 }
