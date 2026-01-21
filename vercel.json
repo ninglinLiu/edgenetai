@@ -1,6 +1,6 @@
 {
   "buildCommand": "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && npx pnpm@latest install && cd apps/dashboard && pnpm build",
   "outputDirectory": "apps/dashboard/.next",
-  "installCommand": "echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && npx pnpm@latest install --filter @edgenetai/dashboard...",
+  "installCommand": "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && npx pnpm@latest install",
   "framework": "nextjs"
 }
