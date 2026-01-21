@@ -37,7 +37,7 @@
    - **Root directory**: 留空（使用仓库根目录）
    - **Build command**: 
      ```bash
-     rm -rf apps/router-api apps/verifier && echo 'packages:\n  - "apps/dashboard"\n  - "packages/*"' > pnpm-workspace.yaml && pnpm install && cd apps/dashboard && pnpm build
+     rm -rf apps/router-api apps/verifier && echo 'packages:\n  - "apps/dashboard"\n  - "packages/*"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile && cd apps/dashboard && pnpm build
      ```
    - **Build output directory**: `apps/dashboard/.next`
    - **Node version**: `20`
