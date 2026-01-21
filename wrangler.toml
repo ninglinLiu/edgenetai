@@ -1,0 +1,13 @@
+# Cloudflare Pages configuration for EdgeNet.AI Dashboard
+# This file is optional - you can also configure via Cloudflare Dashboard
+
+name = "edgenetai-dashboard"
+compatibility_date = "2024-01-01"
+
+[env.production]
+# Production environment settings
+
+# Note: Cloudflare Pages will use the build settings from the Dashboard
+# or from the wrangler.toml file. The actual build command should be
+# configured in the Cloudflare Dashboard under:
+# Pages > Your Project > Settings > Builds & deployments
