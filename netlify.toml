@@ -1,16 +1,17 @@
 [build]
   base = "."
   publish = "apps/dashboard/.next"
-  # Install command: Remove problematic packages, update workspace config, then install
-  # Use --no-frozen-lockfile to handle lockfile mismatches
-  installCommand = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile"
-  # Build command: Build dashboard after dependencies are installed
-  command = "cd apps/dashboard && pnpm build"
+  # Disable automatic installation - we handle it in the build command
+  # Next.js plugin might override installCommand, so we include install in the build command
+  installCommand = "echo 'Skipping auto-install, will install in build command'"
+  # Build command: Remove problematic packages, update workspace, install with --no-frozen-lockfile, then build
+  command = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile && cd apps/dashboard && pnpm build"
   
 [build.environment]
   NODE_VERSION = "20"
   PNPM_VERSION = "10.28.1"
   ENABLE_EXPERIMENTAL_COREPACK = "1"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Remove Next.js plugin to avoid it overriding our custom install command
+# [[plugins]]
+#   package = "@netlify/plugin-nextjs"
