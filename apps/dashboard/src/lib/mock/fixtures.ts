@@ -286,7 +286,7 @@ export function getEvents(scenario: DemoScenario = 'busy'): Event[] {
   
   return Array.from({ length: 20 }, (_, i) => {
     const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
-    const severity = type === 'dispute' ? 'warning' : type === 'queue_backlog' && scenario === 'congested' ? 'error' : 'info';
+    const severity = (type === 'dispute' ? 'warning' as const : type === 'queue_backlog' && scenario === 'congested' ? 'error' as const : 'info' as const);
     
     return {
       id: `event-${i}`,
