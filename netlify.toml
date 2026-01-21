@@ -3,7 +3,7 @@
   publish = "apps/dashboard/.next"
   # Install command: Remove problematic packages, update workspace config, then install
   # Use --no-frozen-lockfile to handle lockfile mismatches
-  install = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile"
+  installCommand = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile"
   # Build command: Build dashboard after dependencies are installed
   command = "cd apps/dashboard && pnpm build"
   
