@@ -1,10 +1,11 @@
 [build]
   base = "."
   publish = "apps/dashboard/.next"
-  # Build command: First remove problematic packages and update workspace config,
-  # then reinstall (Netlify auto-installs before this, but we handle it here too),
-  # finally build dashboard
-  command = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install && cd apps/dashboard && pnpm build"
+  # Install command: Remove problematic packages, update workspace config, then install
+  # Use --no-frozen-lockfile to handle lockfile mismatches
+  install = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile"
+  # Build command: Build dashboard after dependencies are installed
+  command = "cd apps/dashboard && pnpm build"
   
 [build.environment]
   NODE_VERSION = "20"
