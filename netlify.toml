@@ -1,10 +1,11 @@
 [build]
   base = "."
-  publish = "apps/dashboard/.next"
+  publish = "apps/dashboard/out"
   # Disable automatic installation - we handle it in the build command
   # Next.js plugin might override installCommand, so we include install in the build command
   installCommand = "echo 'Skipping auto-install, will install in build command'"
   # Build command: Remove problematic packages, update workspace, install with --no-frozen-lockfile, then build
+  # Note: deploy-dashboard branch already has correct workspace, but keeping compatibility
   command = "rm -rf apps/router-api apps/verifier && echo 'packages:\n  - \"apps/dashboard\"\n  - \"packages/*\"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile && cd apps/dashboard && pnpm build"
   
 [build.environment]
