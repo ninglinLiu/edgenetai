@@ -275,7 +275,7 @@ export function getReceipts(scenario: DemoScenario = 'busy'): Receipt[] {
     blockNumber: 1000000 + i,
     timestamp: new Date(Date.now() - Math.random() * 86400000).toISOString(),
     taskId: `task-${i}`,
-    verdict: Math.random() > 0.1 ? 'PASS' : (Math.random() > 0.5 ? 'FAIL' : 'DISPUTE'),
+    verdict: (Math.random() > 0.1 ? 'PASS' as const : (Math.random() > 0.5 ? 'FAIL' as const : 'DISPUTE' as const)),
     gasUsed: Math.floor(80000 + Math.random() * 40000),
   })).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 }
