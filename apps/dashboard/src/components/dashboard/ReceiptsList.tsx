@@ -71,7 +71,7 @@ export function ReceiptsList({ receipts }: ReceiptsListProps) {
                   <code className="text-xs text-white font-mono bg-slate-900 px-2 py-1 rounded flex-1 truncate">
                     {receipt.txHash.slice(0, 20)}...
                   </code>
-                  <CopyButton value={receipt.txHash} />
+                  <CopyButton text={receipt.txHash} />
                 </div>
               </div>
               <div>
