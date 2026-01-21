@@ -260,7 +260,7 @@ export function getTasks(scenario: DemoScenario = 'busy'): Task[] {
       latency: status !== 'QUEUED' ? Math.floor(200 + Math.random() * 400) : undefined,
       nodes: status !== 'QUEUED' ? [`node-${Math.floor(Math.random() * 10)}`] : undefined,
       similarityScore: status === 'VERIFIED' || status === 'SETTLED' ? 0.85 + Math.random() * 0.15 : undefined,
-      verdict: status === 'VERIFIED' || status === 'SETTLED' ? (Math.random() > 0.1 ? 'PASS' : 'DISPUTE') : undefined,
+      verdict: status === 'VERIFIED' || status === 'SETTLED' ? (Math.random() > 0.1 ? 'PASS' as const : 'DISPUTE' as const) : undefined,
       receiptTxHash: status === 'SETTLED' ? `0x${Math.random().toString(16).slice(2, 66)}` : undefined,
     };
   }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
