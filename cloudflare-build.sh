@@ -18,9 +18,9 @@ packages:
   - "packages/*"
 EOF
 
-# Install dependencies
+# Install dependencies (use --no-frozen-lockfile to handle lockfile mismatches)
 echo "📥 Installing dependencies..."
-pnpm install --frozen-lockfile
+pnpm install --no-frozen-lockfile
 
 # Build dashboard
 echo "🔨 Building dashboard..."

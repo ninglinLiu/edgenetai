@@ -35,6 +35,8 @@
    - **Production branch**: `main`
    - **Framework preset**: `Next.js`（Cloudflare 会自动检测）
    - **Root directory**: 留空（使用仓库根目录）
+   - **Framework preset**: `None` 或留空（不要选择 Next.js，因为我们完全自定义构建）
+   - **Install command**: 留空（在构建命令中处理）
    - **Build command**: 
      ```bash
      rm -rf apps/router-api apps/verifier && echo 'packages:\n  - "apps/dashboard"\n  - "packages/*"' > pnpm-workspace.yaml && pnpm install --no-frozen-lockfile && cd apps/dashboard && pnpm build
