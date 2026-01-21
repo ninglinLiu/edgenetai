@@ -11,14 +11,6 @@ import { CopyButton } from '@/components/common/CopyButton';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ExternalLink } from 'lucide-react';
-import { getTasks } from '@/lib/mock/fixtures';
-
-export function generateStaticParams() {
-  const tasks = getTasks('busy');
-  return tasks.slice(0, 20).map((task) => ({
-    id: task.id,
-  }));
-}
 
 export default function TaskDetailPage() {
   const params = useParams();

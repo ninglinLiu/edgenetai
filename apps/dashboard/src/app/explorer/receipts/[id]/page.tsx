@@ -8,14 +8,6 @@ import type { Receipt } from '@/lib/edge-api/types';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CopyButton } from '@/components/common/CopyButton';
-import { getReceipts } from '@/lib/mock/fixtures';
-
-export function generateStaticParams() {
-  const receipts = getReceipts('busy');
-  return receipts.slice(0, 10).map((receipt) => ({
-    id: receipt.receiptId,
-  }));
-}
 
 export default function ReceiptDetailPage() {
   const params = useParams();
