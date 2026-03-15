@@ -1,6 +1,6 @@
 # EdgeNet.AI
 
-EdgeNet.AI is a proof-of-concept systems prototype exploring decentralized edge inference, SLA-aware task routing, quorum-based verification concepts, and an on-chain receipt design.(For showcase purposes, the frontend dashboard is statically deployed at https://lucky-duckanoo-4db36b.netlify.app/）
+EdgeNet.AI is a proof-of-concept systems prototype exploring decentralized edge inference, SLA-aware task routing, quorum-based verification concepts, and an on-chain receipt design.(For showcase purposes, the frontend dashboard is statically deployed at https://lucky-duckanoo-4db36b.netlify.app/
 
 For showcase purposes, the frontend dashboard is statically deployed at [lucky-duckanoo-4db36b.netlify.app](https://lucky-duckanoo-4db36b.netlify.app/).
 
