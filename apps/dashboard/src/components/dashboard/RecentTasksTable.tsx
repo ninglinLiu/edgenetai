@@ -215,7 +215,7 @@ export function RecentTasksTable({ tasks }: RecentTasksTableProps) {
                     <h3 className="text-sm font-semibold text-slate-400 mb-2">Task ID</h3>
                     <div className="flex items-center gap-2">
                       <code className="text-sm text-white font-mono bg-slate-800 px-3 py-2 rounded">{selectedTask.id}</code>
-                      <CopyButton value={selectedTask.id} />
+                      <CopyButton text={selectedTask.id} />
                     </div>
                   </div>
 
@@ -277,7 +277,7 @@ export function RecentTasksTable({ tasks }: RecentTasksTableProps) {
                       <h3 className="text-sm font-semibold text-slate-400 mb-2">Receipt TX Hash</h3>
                       <div className="flex items-center gap-2">
                         <code className="text-xs text-white font-mono bg-slate-800 px-3 py-2 rounded flex-1">{selectedTask.receiptTxHash}</code>
-                        <CopyButton value={selectedTask.receiptTxHash} />
+                        <CopyButton text={selectedTask.receiptTxHash} />
                       </div>
                     </div>
                   )}

@@ -1,5 +1,5 @@
-// Mock Fixtures - 完整的 Dashboard 数据
-// 支持 Quiet / Busy / Congested 三种场景
+// Mock fixtures for the dashboard demo.
+// Supports the quiet, busy, and congested scenarios.
 
 export type DemoScenario = 'quiet' | 'busy' | 'congested';
 
@@ -260,7 +260,7 @@ export function getTasks(scenario: DemoScenario = 'busy'): Task[] {
       latency: status !== 'QUEUED' ? Math.floor(200 + Math.random() * 400) : undefined,
       nodes: status !== 'QUEUED' ? [`node-${Math.floor(Math.random() * 10)}`] : undefined,
       similarityScore: status === 'VERIFIED' || status === 'SETTLED' ? 0.85 + Math.random() * 0.15 : undefined,
-      verdict: status === 'VERIFIED' || status === 'SETTLED' ? (Math.random() > 0.1 ? 'PASS' : 'DISPUTE') : undefined,
+      verdict: status === 'VERIFIED' || status === 'SETTLED' ? (Math.random() > 0.1 ? 'PASS' as const : 'DISPUTE' as const) : undefined,
       receiptTxHash: status === 'SETTLED' ? `0x${Math.random().toString(16).slice(2, 66)}` : undefined,
     };
   }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -275,7 +275,7 @@ export function getReceipts(scenario: DemoScenario = 'busy'): Receipt[] {
     blockNumber: 1000000 + i,
     timestamp: new Date(Date.now() - Math.random() * 86400000).toISOString(),
     taskId: `task-${i}`,
-    verdict: Math.random() > 0.1 ? 'PASS' : (Math.random() > 0.5 ? 'FAIL' : 'DISPUTE'),
+    verdict: (Math.random() > 0.1 ? 'PASS' as const : (Math.random() > 0.5 ? 'FAIL' as const : 'DISPUTE' as const)),
     gasUsed: Math.floor(80000 + Math.random() * 40000),
   })).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 }
@@ -286,7 +286,7 @@ export function getEvents(scenario: DemoScenario = 'busy'): Event[] {
   
   return Array.from({ length: 20 }, (_, i) => {
     const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
-    const severity = type === 'dispute' ? 'warning' : type === 'queue_backlog' && scenario === 'congested' ? 'error' : 'info';
+    const severity = (type === 'dispute' ? 'warning' as const : type === 'queue_backlog' && scenario === 'congested' ? 'error' as const : 'info' as const);
     
     return {
       id: `event-${i}`,

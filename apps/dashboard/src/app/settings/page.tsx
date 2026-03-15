@@ -1,11 +1,12 @@
 'use client';
 
 import { Shell } from '@/components/layout/Shell';
-import { Button } from '@/components/ui/button';
-import { Settings as SettingsIcon, Database, Zap } from 'lucide-react';
+import { Database, Zap } from 'lucide-react';
 
 export default function SettingsPage() {
-  const apiMode = process.env.NEXT_PUBLIC_EDGE_API_MODE || 'mock';
+  const configuredMode = process.env.NEXT_PUBLIC_EDGE_API_MODE || 'mock';
+  const usesPlannedMode = configuredMode === 'trpc';
+  const activeMode = 'mock';
 
   return (
     <Shell>
@@ -26,19 +27,42 @@ export default function SettingsPage() {
               <div>
                 <div className="font-medium text-white mb-1">Current Mode</div>
                 <div className="text-sm text-slate-400">
-                  {apiMode === 'mock' ? 'Using mock data for development' : 'Using tRPC API'}
+                  Mock-backed demo mode for the statically deployed dashboard
                 </div>
               </div>
-              <div className={`px-4 py-2 rounded-lg font-semibold ${
-                apiMode === 'mock'
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                  : 'bg-green-500/20 text-green-400 border border-green-500/30'
-              }`}>
-                {apiMode.toUpperCase()}
+              <div className="px-4 py-2 rounded-lg font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">
+                {activeMode.toUpperCase()}
               </div>
             </div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4">
+                <div className="mb-1 font-medium text-white">Mock mode</div>
+                <div className="text-sm text-slate-400">
+                  Enabled for the current demo. Data is served through the `EdgeApi`
+                  abstraction using seeded mock scenarios.
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-slate-700 bg-slate-800/40 p-4 opacity-80">
+                <div className="mb-1 flex items-center justify-between gap-3">
+                  <span className="font-medium text-white">tRPC mode</span>
+                  <span className="rounded-full border border-slate-600 px-2 py-0.5 text-xs text-slate-300">
+                    Planned / coming soon
+                  </span>
+                </div>
+                <div className="text-sm text-slate-400">
+                  The client implementation is scaffolded but not ready for the showcase
+                  build, so the dashboard safely falls back to mock mode instead of exposing
+                  a broken path.
+                </div>
+              </div>
+            </div>
+
             <div className="text-sm text-slate-500">
-              To switch modes, set the <code className="px-2 py-1 bg-slate-900 rounded text-slate-300">NEXT_PUBLIC_EDGE_API_MODE</code> environment variable to <code className="px-2 py-1 bg-slate-900 rounded text-slate-300">mock</code> or <code className="px-2 py-1 bg-slate-900 rounded text-slate-300">trpc</code>
+              Keep <code className="px-2 py-1 bg-slate-900 rounded text-slate-300">NEXT_PUBLIC_EDGE_API_MODE</code>{' '}
+              set to <code className="px-2 py-1 bg-slate-900 rounded text-slate-300">mock</code>{' '}
+              for demos. {usesPlannedMode && 'A configured `trpc` value is currently treated as mock mode.'}
             </div>
           </div>
         </div>

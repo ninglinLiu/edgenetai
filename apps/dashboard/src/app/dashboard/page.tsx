@@ -13,12 +13,9 @@ import { SystemStatusPanel } from '@/components/dashboard/SystemStatusPanel';
 import { DemoControls } from '@/components/dashboard/DemoControls';
 import { ArchitectureMiniMap } from '@/components/dashboard/ArchitectureMiniMap';
 import { motion } from 'framer-motion';
-import { Activity, TrendingUp } from 'lucide-react';
-import { useEffect } from 'react';
+import { Activity } from 'lucide-react';
 
 export default function DashboardPage() {
-  // 使用 useDemoData hook，立即返回数据（50-300ms）
-  // Hooks 必须在组件顶层调用
   const {
     summary,
     pipelineStages,
@@ -31,26 +28,11 @@ export default function DashboardPage() {
     receipts,
     events,
     services,
-    queues,
     scenario,
     setScenario,
   } = useDemoData('busy');
 
-  // 调试信息
-  useEffect(() => {
-    console.log('[Dashboard] Component mounted');
-    console.log('[Dashboard] Data loaded:', {
-      hasSummary: !!summary,
-      pipelineStagesCount: pipelineStages?.length,
-      tpsDataCount: tpsData?.length,
-      nodesCount: nodes?.length,
-      tasksCount: tasks?.length,
-      summary,
-    });
-  }, [summary, pipelineStages, tpsData, nodes, tasks]);
-
-  // 永远渲染完整框架，不等待 loading
-  // 如果数据不存在，显示加载状态（但这种情况不应该发生，因为 useMemo 会立即返回数据）
+  // Render a fallback only if fixture generation fails unexpectedly.
   if (!summary || !pipelineStages || !tpsData || !nodes || !tasks) {
     console.warn('[Dashboard] Missing data:', {
       summary: !!summary,
@@ -76,7 +58,6 @@ export default function DashboardPage() {
 
   return (
     <Shell>
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -94,12 +75,10 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
-      {/* Demo Controls (Mock Mode Only) */}
       {(typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_EDGE_API_MODE || 'mock') : 'mock') === 'mock' && (
         <DemoControls scenario={scenario} setScenario={setScenario} />
       )}
 
-      {/* Network Health KPI Cards */}
       <NetworkHealthKpi
         summary={summary}
         tpsData={tpsData}
@@ -108,14 +87,11 @@ export default function DashboardPage() {
         passRateData={passRateData}
       />
 
-      {/* Queue Depth & Dispute/Failed Rates */}
       <QueueDepthKpi summary={summary} />
       <DisputeFailedKpi summary={summary} />
 
-      {/* Proof-of-Inference Pipeline */}
       <PipelineVisualization stages={pipelineStages} />
 
-      {/* Enhanced Charts */}
       <EnhancedCharts
         tpsData={tpsData}
         latencyP50Data={latencyP50Data}
@@ -128,16 +104,13 @@ export default function DashboardPage() {
         }}
       />
 
-      {/* Recent Tasks Table */}
       <RecentTasksTable tasks={tasks} />
 
-      {/* Two Column Layout: Nodes & Receipts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <NodeDirectory nodes={nodes} />
         <ReceiptsList receipts={receipts} />
       </div>
 
-      {/* System Status & Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
           <SystemStatusPanel services={services} />
@@ -145,10 +118,8 @@ export default function DashboardPage() {
         <EnhancedActivityFeed events={events} />
       </div>
 
-      {/* Architecture Mini Map */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3">
-          {/* Additional space for future content */}
         </div>
         <ArchitectureMiniMap />
       </div>

@@ -4,6 +4,7 @@ import { Shell } from '@/components/layout/Shell';
 import { useEdgeApi } from '@/lib/edge-api/EdgeApiProvider';
 import { useEffect, useState } from 'react';
 import type { Node } from '@/lib/edge-api/types';
+import type { NodeFilters } from '@/lib/edge-api/EdgeApi';
 import Link from 'next/link';
 import { SearchBar } from '@/components/common/SearchBar';
 import { FilterChips } from '@/components/common/FilterChips';
@@ -12,7 +13,7 @@ export default function NodesPage() {
   const api = useEdgeApi();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<any>({});
+  const [filters, setFilters] = useState<NodeFilters>({});
 
   useEffect(() => {
     const loadNodes = async () => {

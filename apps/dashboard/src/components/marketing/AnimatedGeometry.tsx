@@ -5,7 +5,7 @@ import './marketing.css';
 
 interface AnimatedGeometryProps {
   className?: string;
-  variant?: 1 | 2 | 3 | 4; // 四个不同的变体
+  variant?: 1 | 2 | 3 | 4; // Four distinct visual variants
 }
 
 export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeometryProps) {
@@ -53,7 +53,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
     });
   };
 
-  // Variant 1: 复杂的立方体网络 + 旋转几何体
+  // Variant 1: layered cube network with rotating shapes
   const renderVariant1 = () => (
     <svg className="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
       <defs>
@@ -72,7 +72,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         </linearGradient>
       </defs>
 
-      {/* 多个旋转的立方体 */}
+      {/* Multiple rotating cubes */}
       {[0, 1, 2].map((i) => {
         const angle = time * (20 + i * 10) + i * 120;
         const x = 200 + i * 200 + parallaxPos.x * (0.5 + i * 0.2);
@@ -92,7 +92,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 连接线网络 */}
+      {/* Connecting line network */}
       <g stroke="url(#grad1-1)" strokeWidth="1.5" opacity="0.4">
         {[0, 1, 2].map((i) => (
           <line
@@ -107,7 +107,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         ))}
       </g>
 
-      {/* 旋转的八边形 */}
+      {/* Rotating octagon */}
       <g transform={`translate(${600 + parallaxPos.x * 0.7}, ${400 + parallaxPos.y * 0.7}) rotate(${time * 30})`}>
         <path
           d="M 0 -70 L 49 -49 L 70 0 L 49 49 L 0 70 L -49 49 L -70 0 L -49 -49 Z"
@@ -119,7 +119,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         />
       </g>
 
-      {/* 额外的旋转小星星 */}
+      {/* Extra rotating stars */}
       {[0, 1, 2, 3, 4].map((i) => {
         const angle = time * (30 + i * 5) + i * 72;
         const radius = 120;
@@ -140,14 +140,14 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 渐变色块 */}
+      {/* Gradient glows */}
       <circle cx={400 + parallaxPos.x * 0.3} cy={300 + parallaxPos.y * 0.3} r={140 + Math.sin(time * 2) * 20} fill="url(#grad1-1)" className="blur-3xl opacity-25" />
       <circle cx={600 + parallaxPos.x * 0.4} cy={200 + parallaxPos.y * 0.4} r={100 + Math.cos(time * 2.5) * 15} fill="url(#grad1-2)" className="blur-3xl opacity-20" />
       <circle cx={200 + parallaxPos.x * 0.5} cy={450 + parallaxPos.y * 0.5} r={90 + Math.sin(time * 3) * 10} fill="url(#grad1-3)" className="blur-3xl opacity-15" />
     </svg>
   );
 
-  // Variant 2: 六边形蜂窝网络 + 粒子效果
+  // Variant 2: hexagonal lattice with particle effects
   const renderVariant2 = () => (
     <svg className="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
       <defs>
@@ -162,7 +162,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         </linearGradient>
       </defs>
 
-      {/* 蜂窝网络 */}
+      {/* Honeycomb lattice */}
       {[0, 1, 2, 3, 4].map((row) => {
         return [0, 1, 2, 3].map((col) => {
           const x = 150 + col * 180 + (row % 2) * 90 + parallaxPos.x * (0.3 + row * 0.1);
@@ -184,7 +184,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         });
       })}
 
-      {/* 连接线 */}
+      {/* Connection lines */}
       <g stroke="url(#grad2-1)" strokeWidth="1" opacity="0.3">
         {[0, 1, 2, 3].map((i) => (
           <line
@@ -199,7 +199,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         ))}
       </g>
 
-      {/* 粒子点 */}
+      {/* Particle nodes */}
       {Array.from({ length: 15 }, (_, i) => {
         const angle = (time * 50 + i * 24) * (Math.PI / 180);
         const radius = 150 + Math.sin(time * 2 + i) * 30;
@@ -217,7 +217,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 额外的旋转三角形 */}
+      {/* Extra rotating triangles */}
       {[0, 1, 2, 3].map((i) => {
         const angle = time * (25 + i * 10) + i * 90;
         const radius = 180;
@@ -238,14 +238,14 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 渐变色块 */}
+      {/* Gradient glows */}
       <circle cx={400 + parallaxPos.x * 0.3} cy={300 + parallaxPos.y * 0.3} r={160 + Math.sin(time * 2.5) * 25} fill="url(#grad2-1)" className="blur-3xl opacity-30" />
       <circle cx={600 + parallaxPos.x * 0.5} cy={150 + parallaxPos.y * 0.5} r={110 + Math.cos(time * 3) * 18} fill="url(#grad2-2)" className="blur-3xl opacity-25" />
       <circle cx={200 + parallaxPos.x * 0.4} cy={450 + parallaxPos.y * 0.4} r={90 + Math.sin(time * 2) * 12} fill="url(#grad2-1)" className="blur-3xl opacity-20" />
     </svg>
   );
 
-  // Variant 3: 链条/连接线 + 脉冲效果
+  // Variant 3: linked nodes with pulse effects
   const renderVariant3 = () => (
     <svg className="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
       <defs>
@@ -260,7 +260,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         </linearGradient>
       </defs>
 
-      {/* 链条连接 */}
+      {/* Linked nodes */}
       {[0, 1, 2, 3, 4].map((i) => {
         const x = 150 + i * 150 + parallaxPos.x * (0.4 + i * 0.1);
         const y = 200 + Math.sin(time * 2 + i) * 40 + parallaxPos.y * (0.4 + i * 0.1);
@@ -301,7 +301,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 旋转的星形 */}
+      {/* Rotating star */}
       <g transform={`translate(${600 + parallaxPos.x * 0.6}, ${400 + parallaxPos.y * 0.6}) rotate(${time * 40})`}>
         <path
           d="M 0 -60 L 18 -18 L 60 -18 L 28 6 L 36 48 L 0 24 L -36 48 L -28 6 L -60 -18 L -18 -18 Z"
@@ -322,7 +322,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         />
       </g>
 
-      {/* 脉冲圆环 */}
+      {/* Pulse rings */}
       {[0, 1, 2].map((i) => {
         const x = 200 + i * 200 + parallaxPos.x * 0.3;
         const y = 450 + parallaxPos.y * 0.3;
@@ -343,7 +343,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 额外的连接节点 */}
+      {/* Extra connector nodes */}
       {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
         const angle = (time * 10 + i * 45) * (Math.PI / 180);
         const radius = 150;
@@ -362,14 +362,14 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 渐变色块 */}
+      {/* Gradient glows */}
       <circle cx={400 + parallaxPos.x * 0.3} cy={300 + parallaxPos.y * 0.3} r={150 + Math.sin(time * 2) * 20} fill="url(#grad3-1)" className="blur-3xl opacity-28" />
       <circle cx={650 + parallaxPos.x * 0.4} cy={180 + parallaxPos.y * 0.4} r={100 + Math.cos(time * 2.5) * 15} fill="url(#grad3-2)" className="blur-3xl opacity-22" />
       <circle cx={200 + parallaxPos.x * 0.5} cy={350 + parallaxPos.y * 0.5} r={80 + Math.sin(time * 3) * 10} fill="url(#grad3-1)" className="blur-3xl opacity-18" />
     </svg>
   );
 
-  // Variant 4: 电路板风格 + 数据流效果
+  // Variant 4: circuit-board styling with data flow effects
   const renderVariant4 = () => (
     <svg className="w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
       <defs>
@@ -388,7 +388,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         </linearGradient>
       </defs>
 
-      {/* 电路板网格 */}
+      {/* Circuit grid */}
       <g stroke="url(#grad4-1)" strokeWidth="1" opacity="0.2">
         {Array.from({ length: 8 }, (_, i) => (
           <line
@@ -416,7 +416,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         ))}
       </g>
 
-      {/* 电路节点 */}
+      {/* Circuit nodes */}
       {[0, 1, 2, 3, 4, 5].map((i) => {
         const row = Math.floor(i / 3);
         const col = i % 3;
@@ -445,7 +445,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
               fill="url(#grad4-1)"
               opacity={0.5}
             />
-            {/* 连接线 */}
+            {/* Connection lines */}
             {col < 2 && (
               <line
                 x1={x + 25 * pulse}
@@ -476,7 +476,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 数据流箭头 */}
+      {/* Data flow arrows */}
       {[0, 1, 2, 3].map((i) => {
         const progress = (time * 20 + i * 25) % 400;
         const x = 150 + progress + parallaxPos.x * 0.3;
@@ -503,7 +503,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 旋转的齿轮 */}
+      {/* Rotating gear */}
       <g transform={`translate(${600 + parallaxPos.x * 0.6}, ${300 + parallaxPos.y * 0.6}) rotate(${time * 25})`}>
         {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
           const angle = (i * 45) * (Math.PI / 180);
@@ -544,7 +544,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         />
       </g>
 
-      {/* 额外的数据流粒子 */}
+      {/* Extra data particles */}
       {Array.from({ length: 20 }, (_, i) => {
         const progress = (time * 30 + i * 20) % 600;
         const x = 100 + progress + parallaxPos.x * 0.3;
@@ -562,7 +562,7 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 额外的旋转菱形 */}
+      {/* Extra rotating diamonds */}
       {[0, 1, 2].map((i) => {
         const angle = time * (20 + i * 5) + i * 120;
         const radius = 100;
@@ -583,14 +583,14 @@ export function AnimatedGeometry({ className = '', variant = 1 }: AnimatedGeomet
         );
       })}
 
-      {/* 渐变色块 */}
+      {/* Gradient glows */}
       <circle cx={400 + parallaxPos.x * 0.3} cy={300 + parallaxPos.y * 0.3} r={180 + Math.sin(time * 2) * 25} fill="url(#grad4-1)" className="blur-3xl opacity-30" />
       <circle cx={600 + parallaxPos.x * 0.4} cy={200 + parallaxPos.y * 0.4} r={120 + Math.cos(time * 2.5) * 18} fill="url(#grad4-2)" className="blur-3xl opacity-25" />
       <circle cx={200 + parallaxPos.x * 0.5} cy={450 + parallaxPos.y * 0.5} r={100 + Math.sin(time * 3) * 15} fill="url(#grad4-3)" className="blur-3xl opacity-20" />
     </svg>
   );
 
-  // 根据 variant 选择渲染函数
+  // Select the renderer for the requested variant.
   const renderContent = () => {
     switch (variant) {
       case 1:
