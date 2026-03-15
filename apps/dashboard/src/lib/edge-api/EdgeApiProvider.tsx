@@ -2,9 +2,6 @@
 
 import React, { createContext, useContext, useMemo } from 'react';
 import type { EdgeApi } from './EdgeApi';
-import { TrpcEdgeApi } from './trpc/TrpcEdgeApi';
-
-// 直接导入 MockEdgeApi
 import { MockEdgeApi } from './mock/MockEdgeApi';
 
 const EdgeApiContext = createContext<EdgeApi | null>(null);
@@ -12,21 +9,18 @@ const EdgeApiContext = createContext<EdgeApi | null>(null);
 export function EdgeApiProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo(() => {
     if (typeof window === 'undefined') {
-      // Server-side: return a dummy API to avoid errors
-      console.log('[EdgeApiProvider] Server-side render, returning dummy API');
+      // Return the mock implementation during server rendering.
       return new MockEdgeApi();
     }
-    
-    const mode = process.env.NEXT_PUBLIC_EDGE_API_MODE || 'mock';
-    console.log('[EdgeApiProvider] Client-side, mode:', mode);
-    
-    if (mode === 'trpc') {
-      return new TrpcEdgeApi();
-    } else {
-      const mockApi = new MockEdgeApi();
-      console.log('[EdgeApiProvider] Using MockEdgeApi mode, instance created');
-      return mockApi;
+
+    const configuredMode = process.env.NEXT_PUBLIC_EDGE_API_MODE || 'mock';
+
+    // The tRPC client is scaffolded but not ready for demo use yet.
+    if (configuredMode === 'trpc') {
+      return new MockEdgeApi();
     }
+
+    return new MockEdgeApi();
   }, []);
 
   return (

@@ -1,5 +1,5 @@
-// Mock Fixtures - 完整的 Dashboard 数据
-// 支持 Quiet / Busy / Congested 三种场景
+// Mock fixtures for the dashboard demo.
+// Supports the quiet, busy, and congested scenarios.
 
 export type DemoScenario = 'quiet' | 'busy' | 'congested';
 

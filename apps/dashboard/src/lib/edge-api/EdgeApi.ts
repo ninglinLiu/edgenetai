@@ -1,4 +1,4 @@
-// EdgeApi Interface - 定义统一的数据访问接口
+// EdgeApi defines the dashboard's data-access boundary.
 import type {
   Task,
   Node,
@@ -13,6 +13,24 @@ import type {
   TaskTimelineStep,
 } from './types';
 
+export interface TaskFilters {
+  status?: string;
+  type?: string;
+  slaTier?: string;
+  startTime?: string;
+  endTime?: string;
+}
+
+export interface NodeFilters {
+  status?: 'online' | 'offline';
+  region?: string;
+}
+
+export interface ReceiptFilters {
+  jobId?: string;
+  txHash?: string;
+}
+
 export interface EdgeApi {
   // Network
   getNetworkStats(): Promise<NetworkStats>;
@@ -21,22 +39,13 @@ export interface EdgeApi {
   getOutcomeData(): Promise<OutcomeData>;
   
   // Tasks
-  listTasks(filters?: {
-    status?: string;
-    type?: string;
-    slaTier?: string;
-    startTime?: string;
-    endTime?: string;
-  }): Promise<Task[]>;
+  listTasks(filters?: TaskFilters): Promise<Task[]>;
   getTask(id: string): Promise<Task | null>;
   getTaskTimeline(id: string): Promise<TaskTimelineStep[]>;
   createTask(request: CreateTaskRequest): Promise<CreateTaskResponse>;
   
   // Nodes
-  listNodes(filters?: {
-    status?: 'online' | 'offline';
-    region?: string;
-  }): Promise<Node[]>;
+  listNodes(filters?: NodeFilters): Promise<Node[]>;
   getNode(id: string): Promise<Node | null>;
   getNodeTasks(nodeId: string, limit?: number): Promise<Task[]>;
   getNodeChartData(nodeId: string, hours: number): Promise<{
@@ -45,14 +54,11 @@ export interface EdgeApi {
   }>;
   
   // Receipts
-  listReceipts(filters?: {
-    jobId?: string;
-    txHash?: string;
-  }): Promise<Receipt[]>;
+  listReceipts(filters?: ReceiptFilters): Promise<Receipt[]>;
   getReceipt(id: string): Promise<Receipt | null>;
   
   // Activity Feed
   subscribeActivity(
     callback: (activity: ActivityItem) => void
-  ): () => void; // Returns unsubscribe function
+  ): () => void;
 }

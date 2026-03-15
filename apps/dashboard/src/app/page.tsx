@@ -107,14 +107,20 @@ export default function LandingPage() {
               at edge speed.
             </h1>
             <p className="text-xl text-slate-300 leading-relaxed">
-              Fast, familiar, frictionless. Low latency inference with verifiable results.
-              Compatible with existing tools: tRPC SDK, EVM, and wagmi integration.
+              Fast, familiar, frictionless. A prototype for low-latency inference with
+              verification-oriented system design. Compatible with existing tools such as
+              EVM-based wallets and TypeScript clients.
             </p>
             <div className="flex gap-4">
               <Link href="/dashboard">
                 <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                   Enter Dashboard
                   <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/pitch">
+                <Button variant="outline" size="lg" className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10">
+                  Pitch Deck
                 </Button>
               </Link>
             </div>
@@ -152,8 +158,8 @@ export default function LandingPage() {
               + consistency verification
             </h2>
             <p className="text-xl text-slate-300 leading-relaxed">
-              Decentralized by design. Bronze/Silver/Gold redundancy tiers with threshold-based
-              verification. PASS/FAIL/DISPUTE resolution ensures trust and reliability.
+              Decentralized by design. Bronze, Silver, and Gold redundancy tiers model how
+              threshold-based verification could classify results as PASS, FAIL, or DISPUTE.
             </p>
             <div className="flex flex-wrap gap-2 mt-8">
               {keywords2.map((keyword, idx) => (
@@ -183,8 +189,9 @@ export default function LandingPage() {
               auditable results
             </h2>
             <p className="text-xl text-slate-300 leading-relaxed">
-              Trust, settled on-chain. Every inference result is recorded as an on-chain receipt
-              with proof-of-inference (v0). Fully auditable and verifiable.
+              Receipt-oriented by design. The prototype includes an on-chain settlement model
+              and receipt flow to make verification and accountability explicit in the system
+              architecture.
             </p>
             <div className="flex flex-wrap gap-2 mt-8">
               {keywords3.map((keyword, idx) => (
@@ -218,8 +225,9 @@ export default function LandingPage() {
                 queue-based routing
               </h2>
               <p className="text-xl text-slate-300 leading-relaxed">
-                Plug & play integration. Router API with BullMQ, Node Agents (Python FastAPI),
-                Verifier (N-of-M consistency), and Solidity Contracts for on-chain receipts.
+              Queue-based integration across a Router API, Python node agents, verifier
+              workers, and contract packages. The current repository demonstrates the system
+              boundaries even where full live integration is still in progress.
               </p>
               <div className="flex gap-4 mt-8">
                 <Link href="/dashboard">
@@ -245,7 +253,7 @@ export default function LandingPage() {
           <div className="mt-16 pt-8 border-t border-slate-800">
             <div className="flex flex-wrap gap-6 justify-center items-center">
               <a
-                href="mailto:x07514475479@gmail.com"
+                href="mailto:contact@edgenet.ai"
                 className="flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors"
               >
                 <Mail className="w-5 h-5" />

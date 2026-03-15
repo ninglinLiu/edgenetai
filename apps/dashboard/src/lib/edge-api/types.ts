@@ -1,4 +1,4 @@
-// EdgeApi Types - 统一的数据类型定义
+// Shared dashboard domain types.
 
 export enum TaskType {
   LLM_SUMMARY = 'LLM_SUMMARY',

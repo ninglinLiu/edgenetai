@@ -1,5 +1,5 @@
-// TrpcEdgeApi - tRPC 实现（待完善）
-import type { EdgeApi } from '../EdgeApi';
+// TrpcEdgeApi is a scaffold for the future live client implementation.
+import type { EdgeApi, NodeFilters, ReceiptFilters, TaskFilters } from '../EdgeApi';
 import type {
   Task,
   Node,
@@ -14,12 +14,12 @@ import type {
   TaskTimelineStep,
 } from '../types';
 
-// TODO: 导入 tRPC client
+// TODO: Import the generated tRPC client when the live API is ready.
 // import { trpc } from '@/lib/trpc';
 
 export class TrpcEdgeApi implements EdgeApi {
   async getNetworkStats(): Promise<NetworkStats> {
-    // TODO: 调用 tRPC procedure
+    // TODO: Call the live tRPC procedure.
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
@@ -35,13 +35,15 @@ export class TrpcEdgeApi implements EdgeApi {
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
-  async listTasks(filters?: any): Promise<Task[]> {
-    // TODO: 调用 tRPC task.list procedure
+  async listTasks(filters?: TaskFilters): Promise<Task[]> {
+    void filters;
+    // TODO: Call the live task.list procedure.
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
   async getTask(id: string): Promise<Task | null> {
-    // TODO: 调用 tRPC task.status procedure
+    void id;
+    // TODO: Call the live task.status procedure.
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
@@ -50,11 +52,13 @@ export class TrpcEdgeApi implements EdgeApi {
   }
 
   async createTask(request: CreateTaskRequest): Promise<CreateTaskResponse> {
-    // TODO: 调用 tRPC task.create procedure
+    void request;
+    // TODO: Call the live task.create procedure.
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
-  async listNodes(filters?: any): Promise<Node[]> {
+  async listNodes(filters?: NodeFilters): Promise<Node[]> {
+    void filters;
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
@@ -73,8 +77,9 @@ export class TrpcEdgeApi implements EdgeApi {
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
-  async listReceipts(filters?: any): Promise<Receipt[]> {
-    // TODO: 调用 tRPC task.receipt procedure
+  async listReceipts(filters?: ReceiptFilters): Promise<Receipt[]> {
+    void filters;
+    // TODO: Call the live receipt procedure.
     throw new Error('Not implemented: Use MockEdgeApi for now');
   }
 
@@ -83,7 +88,8 @@ export class TrpcEdgeApi implements EdgeApi {
   }
 
   subscribeActivity(callback: (activity: ActivityItem) => void): () => void {
-    // TODO: 使用 tRPC subscription
+    void callback;
+    // TODO: Use a live tRPC subscription when available.
     return () => {};
   }
 }

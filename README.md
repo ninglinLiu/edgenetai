@@ -1,286 +1,202 @@
-# EdgeNet.AI - Proof-of-Inference DePIN
+# EdgeNet.AI
 
-A decentralized inference network that enables users to submit AI tasks (LLM/OCR) for redundant execution across distributed nodes, with on-chain verification and settlement.
+EdgeNet.AI is a proof-of-concept systems prototype exploring decentralized edge inference, SLA-aware task routing, quorum-based verification concepts, and an on-chain receipt design.
 
-## 🌟 Overview
+Additional project notes:
 
-EdgeNet.AI is a DePIN (Decentralized Physical Infrastructure Network) that provides verifiable AI inference through redundant execution and consensus verification. Tasks are dispatched to multiple nodes in parallel, results are verified for consistency, and successful completions are settled on-chain with cryptographic receipts.
+- `ARCHITECTURE.md` explains the intended system boundaries and task lifecycle.
+- `STATUS.md` gives an honest implementation-status view.
+- `DESIGN_DECISIONS.md` summarizes the most important trade-offs behind the prototype.
 
-### Key Features
+## Overview
 
-- **N-of-M Redundancy**: Tasks execute on multiple nodes simultaneously for fault tolerance
-- **Consistency Verification**: Automated verification ensures result integrity (85% similarity threshold)
-- **On-Chain Settlement**: Immutable receipts stored on Ethereum-compatible chains
-- **Multi-Task Support**: LLM summarization and OCR image processing
-- **SLA Tiers**: Bronze, Silver, and Gold tiers with varying redundancy levels
-- **Real-time Dashboard**: Monitor tasks, nodes, and network health
+EdgeNet.AI explores a systems problem that sits at the intersection of distributed systems, AI infrastructure, and blockchain-adjacent accountability:
 
-## 🏗️ Architecture
+- how to route inference work across distributed nodes
+- how to reason about results returned by untrusted or heterogeneous participants
+- how to model verification, settlement, and receipts in a way that is inspectable
 
-```
-┌─────────────┐
-│  Dashboard  │ Next.js 14 + tRPC + wagmi (Port 3000)
-│             │ Static Export (Deployed on Netlify)
-└──────┬──────┘
-       │ HTTP/tRPC
-┌──────▼──────────┐
-│  Router API     │ Fastify + tRPC + BullMQ (Port 3001)
-│                 │ PostgreSQL + Redis
-└──────┬──────────┘
-       │ Queue Dispatch
-   ┌───┴───┬──────────┐
-   │       │          │
-┌──▼──┐ ┌─▼───┐  ┌───▼────┐
-│Node1│ │Node2│  │Verifier│ Python FastAPI + Ollama/PaddleOCR
-│     │ │ ... │  │        │ TypeScript Workers
-└──┬──┘ └─┬───┘  └───┬────┘ (Ports 8001, 8002)
-   │      │          │
-   └──────┴──────────┘
-          │
-    ┌─────▼─────┐
-    │  Contract │ Solidity 0.8.24 (Foundry)
-    │InferenceReceipt│ Anvil/Sepolia
-    └───────────┘
-```
+The repository is best understood as a university showcase prototype rather than a product launch. The current strength of the project is not that it runs a live decentralized marketplace today, but that it demonstrates a credible architecture for one and exposes the key interfaces cleanly enough to discuss, critique, and extend.
 
-## 📊 Data Flow
+## Why This Project Matters
 
-```
-User Submit → Router API → Dispatch Queue
-                    ↓
-            Node Agents (N-of-M redundancy)
-                    ↓
-            Execution Results
-                    ↓
-            Verify Queue → Verifier (consistency check)
-                    ↓
-            Settlement Queue → Smart Contract
-                    ↓
-            On-Chain Receipt → Dashboard
-```
+For a university audience, EdgeNet.AI is valuable because it turns a broad idea like "decentralized inference" into a concrete software system with visible boundaries:
 
-## 🔄 Verification Flow (v0)
+- a typed dashboard layer for presenting system state
+- a router/verifier/node-agent decomposition instead of a monolithic app
+- shared packages that signal interface-first design
+- a mock-backed frontend that still visualizes queues, verification stages, receipts, and network health
 
-1. **Task Submission**: User submits task with SLA tier specification
-2. **N-of-M Dispatch**: 
-   - Bronze: 2-of-3 nodes
-   - Silver: 3-of-5 nodes
-   - Gold: 5-of-7 nodes
-3. **Parallel Execution**: Nodes execute independently
-4. **Consistency Check**:
-   - **LLM Tasks**: Cosine similarity between outputs (threshold: 85%)
-   - **OCR Tasks**: Normalized edit distance comparison
-5. **Result Classification**:
-   - **PASS** (≥85% similarity): Emit on-chain receipt
-   - **FAIL** (<70% similarity): Mark as failed
-   - **DISPUTE** (70-85% similarity): Flag for manual review
+That combination makes the project useful as both a technical prototype and a teaching artifact. It shows system decomposition, data modeling, interface design, and honest product scoping.
 
-## 🔧 Tech Stack
+## System Architecture Overview
 
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **Dashboard** | Next.js 14, React 18, TypeScript, Tailwind CSS, tRPC, wagmi, ECharts | User interface & task submission |
-| **Router API** | Fastify, tRPC, BullMQ, PostgreSQL, Redis | Task dispatch & status tracking |
-| **Verifier** | TypeScript, BullMQ, PostgreSQL | N-of-M consistency verification |
-| **Node Agent** | Python 3.11, FastAPI, Ollama, PaddleOCR | Execute LLM/OCR inference |
-| **Contracts** | Solidity 0.8.24, Foundry | On-chain receipt storage |
-| **Infrastructure** | Docker Compose, Redis, PostgreSQL, Anvil | Development environment |
+At a high level, the repository is organized around six responsibilities:
 
-## 📦 Project Structure
+- `apps/dashboard`: Next.js dashboard for task submission, task inspection, network views, and architecture visualization
+- `apps/router-api`: Fastify + tRPC API intended to receive tasks, persist them, and enqueue downstream work
+- `apps/verifier`: BullMQ-based workers for verification and settlement steps
+- `apps/node-agent`: Python FastAPI service intended to execute task types such as LLM summarization or OCR
+- `packages/contracts`: Foundry-based Solidity contracts for receipt emission and settlement-related primitives
+- `packages/proto` and `packages/sdk`: shared schemas/types and contract-facing SDK utilities
 
-```
-edgenetai/
-├── apps/
-│   ├── dashboard/          # Next.js frontend (static export)
-│   │   ├── src/
-│   │   │   ├── app/        # App Router pages
-│   │   │   ├── components/ # React components
-│   │   │   ├── lib/        # API clients, types, utilities
-│   │   │   └── hooks/      # Custom React hooks
-│   │   └── next.config.js  # Next.js config (static export)
-│   ├── router-api/         # Fastify + tRPC API server
-│   │   ├── src/
-│   │   │   ├── routes/     # API route handlers
-│   │   │   ├── db/         # Database schema & client
-│   │   │   └── queue/      # BullMQ queue setup
-│   ├── verifier/           # Verification workers
-│   │   └── src/
-│   │       └── verification/ # Consistency checking logic
-│   └── node-agent/         # Python FastAPI agent
-│       └── main.py         # Inference execution
-├── packages/
-│   ├── contracts/          # Foundry Solidity contracts
-│   │   └── src/
-│   │       └── InferenceReceipt.sol
-│   ├── proto/              # Shared TypeScript types
-│   └── sdk/                # Client SDK
-├── infra/
-│   ├── docker-compose.yml  # Redis, PostgreSQL, Ollama
-│   └── anvil.json          # Local chain config
-├── netlify.toml            # Netlify deployment config
-├── pnpm-workspace.yaml     # PNPM monorepo config
-└── turbo.json              # Turborepo config
-```
+Important implementation note:
 
-## 🚀 Getting Started
+- The dashboard is the most complete and presentation-ready component today.
+- The dashboard currently runs in mock mode through the `EdgeApi` abstraction.
+- The tRPC/live dashboard client is scaffolded but intentionally disabled for the showcase build.
+- The repository contains backend and contract implementations at different levels of completeness, but the dependable default path today is the dashboard demo rather than a fully integrated network.
 
-### Prerequisites
+## Repository Structure
 
-- **Node.js**: >=20.0.0
-- **PNPM**: >=8.0.0 (we use pnpm@10.28.1)
-- **Python**: 3.11+
-- **Docker**: For local infrastructure
-- **Foundry**: For smart contract development
+| Path | Role |
+| --- | --- |
+| `apps/dashboard` | Static-exportable Next.js dashboard and demo UI |
+| `apps/router-api` | Fastify + tRPC API and queue orchestration prototype |
+| `apps/verifier` | Verification and settlement workers |
+| `apps/node-agent` | Python execution agent for inference tasks |
+| `packages/contracts` | Solidity receipt contract and Foundry tests |
+| `packages/proto` | Shared Zod schemas and backend-oriented TypeScript types |
+| `packages/sdk` | Contract interaction SDK built on `viem` |
+| `infra` | Local infrastructure configuration such as Anvil and Docker Compose |
+| `scripts` | Seed/demo scripts and deployment helpers |
 
-### Installation
+## Implementation Status
+
+| Component | Status | Notes |
+| --- | --- | --- |
+| Dashboard UI | Implemented | The strongest part of the repo; statically deployable and mock-backed |
+| `EdgeApi` provider pattern | Implemented | Clean interface boundary between demo UI and future live data sources |
+| Scenario-based mock data | Mock-backed | Supports quiet, busy, and congested network narratives |
+| Dashboard tRPC/live mode | Scaffolded | Client exists as a placeholder and is deliberately not enabled for demos |
+| Router API | Partial | Fastify/tRPC routes, queue hooks, and DB access exist, but this is not the current demo path |
+| Verifier workers | Partial | Verification and settlement workers exist, but are not showcased as a proven end-to-end flow |
+| Node agent LLM path | Partial | FastAPI execution path exists for summarization |
+| Node agent OCR path | Placeholder | OCR currently uses placeholder behavior rather than a complete production-quality flow |
+| Smart contracts | Implemented | Receipt contract and tests exist; this repo does not present a live deployed contract system |
+| Shared packages | Implemented | `proto` and `sdk` show intended package boundaries and typed interfaces |
+| Full multi-service deployment | Scaffolded | The checked-in workspace is currently narrowed around the dashboard and shared packages |
+
+For a fuller breakdown, see `STATUS.md`.
+
+## Data Flow / Lifecycle
+
+The intended system lifecycle is:
+
+1. Submit: a client creates a task with a task type and SLA tier.
+2. Dispatch: a router service decides how many nodes should execute the task.
+3. Execute: node agents perform inference work and return outputs plus telemetry.
+4. Verify: a verifier compares outputs and classifies the result as pass, fail, or dispute.
+5. Settle: successful work can produce a receipt or settlement record.
+6. Receipt: the dashboard exposes the resulting audit trail.
+
+This lifecycle already appears in the domain model and UI, even where the live wiring is still incomplete. That is why the project works well as a systems prototype: reviewers can inspect the intended flow without being asked to believe that every layer is production-complete today.
+
+## Key Design Decisions
+
+### `EdgeApi` abstraction
+
+The dashboard does not call backend code directly. Instead, it depends on a local `EdgeApi` interface with provider-based injection. This makes it possible to:
+
+- ship a polished mock-backed dashboard
+- preserve the future option of switching to a live client
+- test UI flows independently from backend readiness
+
+### Scenario-based mocking
+
+The mock system is not random filler. It is structured around scenarios such as quiet, busy, and congested so the dashboard can illustrate how the system should behave under different operating conditions.
+
+### Static dashboard export
+
+The dashboard is configured for static export because the repository’s current showcase priority is presentation quality and reliability, not full-stack runtime integration. This keeps the demo easy to host and reduces operational noise during review.
+
+### Monorepo boundaries
+
+Separating dashboard, router, verifier, node-agent, contracts, and shared packages helps communicate systems thinking. Even where some modules are incomplete, the decomposition itself is informative and intentional.
+
+### Typed shared models
+
+The project includes typed domain models and shared schemas because decentralized-inference workflows are easiest to reason about when task state, verification state, and receipt structure are explicit.
+
+More detail is available in `DESIGN_DECISIONS.md`.
+
+## Related Systems / Comparison
+
+EdgeNet.AI is inspired by problem spaces explored by projects such as io.net, Akash, and Gensyn, but it should not be described as a comparable production system.
+
+- `io.net` focuses on a real-world distributed GPU marketplace and operational network scale.
+- `Akash` centers on decentralized infrastructure marketplaces at deployment/infrastructure level.
+- `Gensyn` is associated with distributed machine learning and verification-oriented compute research.
+
+EdgeNet.AI is closer to a research-inspired architecture exploration. It prototypes ideas around routing, verification, receipts, and system decomposition in a student-built codebase. It is not a live competitor, and it is not presented here as one.
+
+## Running The Project
+
+### Supported path today
+
+The most reliable thing to run in the current repository is the dashboard demo:
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd edgenetai
-
-# Install dependencies
 pnpm install
-
-# Enable corepack (if not already enabled)
-corepack enable
-```
-
-### Local Development
-
-1. **Start Infrastructure**
-
-```bash
-# Start Redis and PostgreSQL
-make up
-# or
-docker-compose -f infra/docker-compose.yml up -d
-```
-
-2. **Start Local Blockchain**
-
-```bash
-# Start Anvil (local Ethereum node)
-make anvil
-# or
-cd infra && anvil --config anvil.json
-```
-
-3. **Deploy Smart Contracts**
-
-```bash
-cd packages/contracts
-
-# Deploy to local Anvil
-forge script script/Deploy.s.sol:DeployScript \
-  --rpc-url http://localhost:8545 \
-  --broadcast
-```
-
-4. **Start Services**
-
-```bash
-# Start all services (dashboard, router-api, verifier)
-pnpm dev
-
-# Or start individually:
 pnpm --filter @edgenetai/dashboard dev
-pnpm --filter @edgenetai/router-api dev
-pnpm --filter @edgenetai/verifier dev
 ```
 
-5. **Start Node Agents**
+Or build the static version:
 
 ```bash
-cd apps/node-agent
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Start agent (in separate terminals)
-python main.py --port 8001
-python main.py --port 8002
+pnpm --filter @edgenetai/dashboard build
 ```
 
-**Access Points:**
-- Dashboard: http://localhost:3000
-- Router API: http://localhost:3001
-- Node Agents: http://localhost:8001, http://localhost:8002
+### Important repository-state note
 
-## 🌐 Deployment
+The checked-in `pnpm-workspace.yaml` is currently narrowed to:
 
-### Dashboard (Static Export)
+- `apps/dashboard`
+- `packages/*`
 
-The dashboard is configured for static export and deployed on Netlify:
+That means the dashboard and shared packages are the default runnable workspace today. Backend directories such as `apps/router-api` and `apps/verifier` are present in the repository, but they are not part of the current default workspace install/build path.
 
-```bash
-# Build for production
-cd apps/dashboard
-pnpm build
+## Roadmap
 
-# Output is generated in apps/dashboard/out
-```
+### Current prototype phase
 
-**Deployment Branch**: `deploy-dashboard`
-- **Build Command**: `pnpm -C apps/dashboard build`
-- **Publish Directory**: `apps/dashboard/out`
-- **Node Version**: 20
-- **PNPM Version**: 10.28.1
+- polish the dashboard as a mock-backed systems demo
+- keep the architecture narrative and typed boundaries clear
+- make implementation status explicit and honest
 
-### Other Services
+### Next integration phase
 
-- **Router API**: Deploy to your preferred Node.js hosting (Railway, Render, etc.)
-- **Verifier**: Same as Router API (Node.js service)
-- **Node Agents**: Deploy Python FastAPI services (Fly.io, Railway, etc.)
+- restore a full workspace configuration for backend experimentation
+- wire the dashboard `EdgeApi` abstraction to a real client path
+- validate one local end-to-end happy path across router, verifier, and node agent
 
-## 📝 Scripts
+### Future systems phase
 
-```bash
-# Development
-pnpm dev              # Start all services in dev mode
-pnpm build            # Build all packages
-pnpm lint             # Lint all packages
-pnpm test             # Run tests
-pnpm format           # Format code with Prettier
+- strengthen verification logic and evidence capture
+- improve settlement/receipt handling
+- explore stronger cryptographic or trusted-execution proofs
 
-# Specific packages
-pnpm --filter @edgenetai/dashboard dev
-pnpm --filter @edgenetai/router-api dev
-```
+## Limitations
 
-## 🗺️ Roadmap
+- The dashboard is currently mock-driven.
+- The live dashboard tRPC mode is scaffolded but not ready for demo use.
+- Backend services are only partially wired into a repeatable end-to-end workflow.
+- The OCR execution path is still placeholder-level.
+- Contract code exists, but this repository should not be described as operating a live on-chain settlement system.
+- The current checked-in workspace is optimized for the dashboard showcase rather than full monorepo execution.
 
-- [x] **v0 (MVP)**: N-of-M redundancy + consistency verification
-- [ ] **v1**: TEE remote attestation (SGX/SEV/TDX)
-- [ ] **v2**: zkML selective proofs
-- [ ] **v3**: Economic incentives & tokenomics
-- [ ] **v4**: Multi-chain support
+## Academic / Portfolio Value
 
-## 🤝 Contributing
+EdgeNet.AI demonstrates:
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+- distributed-systems decomposition
+- interface-first frontend architecture
+- typed state and contract modeling
+- queue- and workflow-oriented thinking
+- a pragmatic prototype strategy that separates UI validation from backend completeness
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+That makes it a strong portfolio or capstone-style artifact even in advance of full backend completion.
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- Built with [Next.js](https://nextjs.org/)
-- Smart contracts powered by [Foundry](https://getfoundry.sh/)
-- Queue management with [BullMQ](https://bullmq.io/)
-- AI inference via [Ollama](https://ollama.ai/) and [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
-
-## 📧 Contact
-
-For questions or support, please open an issue on GitHub.
-
----
-
-**Note**: This is an MVP version. Production deployments should include additional security measures, monitoring, and scalability considerations.
+This project is licensed under the MIT License.

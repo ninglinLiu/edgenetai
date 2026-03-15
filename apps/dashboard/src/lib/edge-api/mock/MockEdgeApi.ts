@@ -1,12 +1,7 @@
-// MockEdgeApi - Mock 实现（Stub 版本）
-// TODO: 实现完整的状态机模拟器
-// TODO: 实现任务状态流转（Queued→Assigned→Inference→Proof→Verified→Settled）
-// TODO: 实现 Activity Feed 事件发射器
-// TODO: 实现 NetworkStats 动态更新（每 3-5s 微动）
-// TODO: 实现 localStorage 持久化（可选）
-// TODO: 实现 Seed 数据生成（10 nodes、30 tasks、10 receipts）
+// MockEdgeApi powers the static dashboard demo with seeded data.
+// Future work could add state transitions, activity events, and persistence.
 
-import type { EdgeApi } from '../EdgeApi';
+import type { EdgeApi, NodeFilters, ReceiptFilters, TaskFilters } from '../EdgeApi';
 import type {
   Task,
   Node,
@@ -34,13 +29,7 @@ export class MockEdgeApi implements EdgeApi {
   private activityCallbacks: Set<(activity: ActivityItem) => void> = new Set();
 
   constructor() {
-    console.log('[MockEdgeApi] Constructor called, seeding data...');
     this.seedData();
-    console.log('[MockEdgeApi] Data seeded:', {
-      nodes: this.nodes.size,
-      tasks: this.tasks.size,
-      receipts: this.receipts.size,
-    });
   }
 
   private seedData() {
@@ -110,8 +99,6 @@ export class MockEdgeApi implements EdgeApi {
   }
 
   async getNetworkStats(): Promise<NetworkStats> {
-    console.log('[MockEdgeApi] getNetworkStats called');
-    // 立即返回，不等待
     return Promise.resolve({
       onlineNodes: 8,
       totalNodes: 10,
@@ -125,7 +112,6 @@ export class MockEdgeApi implements EdgeApi {
   }
 
   async getThroughputData(hours: number): Promise<ThroughputDataPoint[]> {
-    console.log('[MockEdgeApi] getThroughputData called, hours:', hours);
     const now = Date.now();
     return Promise.resolve(Array.from({ length: 24 }, (_, i) => ({
       timestamp: new Date(now - (23 - i) * 3600000).toISOString(),
@@ -134,7 +120,6 @@ export class MockEdgeApi implements EdgeApi {
   }
 
   async getLatencyData(hours: number): Promise<LatencyDataPoint[]> {
-    console.log('[MockEdgeApi] getLatencyData called, hours:', hours);
     const now = Date.now();
     return Promise.resolve(Array.from({ length: 24 }, (_, i) => ({
       timestamp: new Date(now - (23 - i) * 3600000).toISOString(),
@@ -143,7 +128,6 @@ export class MockEdgeApi implements EdgeApi {
   }
 
   async getOutcomeData(): Promise<OutcomeData> {
-    console.log('[MockEdgeApi] getOutcomeData called');
     return Promise.resolve({
       pass: 85,
       fail: 5,
@@ -151,7 +135,7 @@ export class MockEdgeApi implements EdgeApi {
     });
   }
 
-  async listTasks(filters?: any): Promise<Task[]> {
+  async listTasks(filters?: TaskFilters): Promise<Task[]> {
     let tasks = Array.from(this.tasks.values());
     if (filters?.status) {
       tasks = tasks.filter(t => t.status === filters.status);
@@ -204,16 +188,18 @@ export class MockEdgeApi implements EdgeApi {
     };
     this.tasks.set(taskId, task);
 
-    // TODO: 启动状态机模拟器
-    // TODO: 触发 activity event
+    // Future demo work: simulate status transitions and emit activity events.
 
     return { taskId, status: TaskStatus.QUEUED };
   }
 
-  async listNodes(filters?: any): Promise<Node[]> {
+  async listNodes(filters?: NodeFilters): Promise<Node[]> {
     let nodes = Array.from(this.nodes.values());
     if (filters?.status) {
       nodes = nodes.filter(n => n.status === filters.status);
+    }
+    if (filters?.region) {
+      nodes = nodes.filter(n => n.region === filters.region);
     }
     return nodes;
   }
@@ -245,7 +231,7 @@ export class MockEdgeApi implements EdgeApi {
     };
   }
 
-  async listReceipts(filters?: any): Promise<Receipt[]> {
+  async listReceipts(filters?: ReceiptFilters): Promise<Receipt[]> {
     let receipts = Array.from(this.receipts.values());
     if (filters?.jobId) {
       receipts = receipts.filter(r => r.jobId === filters.jobId);
@@ -262,7 +248,7 @@ export class MockEdgeApi implements EdgeApi {
 
   subscribeActivity(callback: (activity: ActivityItem) => void): () => void {
     this.activityCallbacks.add(callback);
-    // TODO: 实现事件发射器
+    // Future demo work: emit synthetic activity events to subscribers.
     return () => {
       this.activityCallbacks.delete(callback);
     };

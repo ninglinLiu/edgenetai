@@ -1,16 +1,13 @@
 'use client';
 
-import { useEdgeApi } from '@/lib/edge-api/EdgeApiProvider';
 import { useNetworkStats } from '@/hooks/useNetworkStats';
 import { WalletConnect } from '@/components/wallet/WalletConnect';
 import { Activity, Zap, Clock, CheckCircle2 } from 'lucide-react';
 
 export function Topbar() {
-  console.log('[Topbar] Component rendering...');
   let statsResult;
   try {
     statsResult = useNetworkStats();
-    console.log('[Topbar] useNetworkStats succeeded:', statsResult);
   } catch (err) {
     console.error('[Topbar] useNetworkStats failed:', err);
     statsResult = { stats: null, loading: false };

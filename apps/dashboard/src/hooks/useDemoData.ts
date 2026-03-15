@@ -19,7 +19,7 @@ export function useDemoData(initialScenario: DemoScenario = 'busy') {
 
   const data = useMemo(() => {
     try {
-      // 立即返回数据，不模拟延迟（在客户端已经是同步的）
+      // Fixture generation is synchronous, so return data immediately.
       return {
         summary: getDashboardSummary(scenario),
         pipelineStages: getPipelineStages(scenario),
@@ -36,7 +36,7 @@ export function useDemoData(initialScenario: DemoScenario = 'busy') {
       };
     } catch (error) {
       console.error('[useDemoData] Error generating data:', error);
-      // 返回默认数据
+      // Fall back to the default demo scenario if fixture generation fails.
       const defaultScenario: DemoScenario = 'busy';
       return {
         summary: getDashboardSummary(defaultScenario),
