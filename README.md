@@ -4,6 +4,13 @@ EdgeNet.AI is a proof-of-concept systems prototype exploring decentralized edge 
 
 For showcase purposes, the frontend dashboard is statically deployed at [lucky-duckanoo-4db36b.netlify.app](https://lucky-duckanoo-4db36b.netlify.app/).
 
+## Showcase Screenshots
+
+![Dashboard overview](images/dashboard-overview.png)
+![Pipeline and charts](images/dashboard-pipeline-charts.png)
+![Nodes and receipts](images/dashboard-nodes-receipts.png)
+![Landing page routing hero](images/landing-routing-hero.png)
+
 Additional project notes:
 
 - `ARCHITECTURE.md` explains the intended system boundaries and task lifecycle.
